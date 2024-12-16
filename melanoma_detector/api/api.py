@@ -24,11 +24,20 @@ def root():
 
 @app.post("/predict")
 async def receive_image(img: UploadFile=File(...)):
-    contents= await img.read() ##archivo de type:byte
-    nparr = np.fromstring(contents, np.uint8) ## lo conviert en array
-    ##tensor_img = tf.convert_to_tensor(nparr) ## lo convierte en tensor
-    preproc_img=preprocess_image(nparr)
+    contents = await img.read()  # Read byte data
+    nparr = np.frombuffer(contents, np.uint8)  # Corrected from np.fromstring
+    preproc_img = preprocess_image(nparr)
     prediction = app.state.model.predict(tf.expand_dims(preproc_img, axis=0))
-    risk = "Alto riesgo" if prediction[0][0] > 0.5 else "Bajo riesgo"
-    return dict(fare=float(prediction[0][0]))
-    ##return {"risk": prediction[0][0]}
+    return {"fare": float(prediction[0][0])}  # Return the prediction
+
+
+
+
+   ##contents= await img.read() ##archivo de type:byte
+   ##nparr = np.fromstring(contents, np.uint8) ## lo conviert en array
+   ####tensor_img = tf.convert_to_tensor(nparr) ## lo convierte en tensor
+   ##preproc_img=preprocess_image(nparr)
+   ##prediction = app.state.model.predict(tf.expand_dims(preproc_img, axis=0))
+   ####risk = "Alto riesgo" if prediction[0][0] > 0.5 else "Bajo riesgo"
+   ##return dict(fare=float(prediction[0][0]))
+   ####return {"risk": prediction[0][0]}

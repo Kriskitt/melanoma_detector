@@ -47,7 +47,7 @@ if new_input is not None:
         if res.status_code==200:
             st.success("File processed succesfully! ✅")
             response = res.json()
-            risk = response.get("risk")
+            risk = response.get("fare")
 
             if risk:
                 st.markdown(f"Resultado: ##{risk}##")
