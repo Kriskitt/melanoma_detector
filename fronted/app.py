@@ -1,10 +1,10 @@
 import streamlit as st
 from PIL import Image
 import requests
-# from dotenv import load_dotenv
+import json
 import os
 
-url="https://localhost:8000"
+url="http://localhost:8000"
 
 # Configuración inicial de la página de Streamlit
 st.set_page_config(
@@ -45,5 +45,11 @@ if new_input is not None:
         res=requests.post(url+"/predict",files={"img":img_bytes})
 
         if res.status_code==200:
-            ### Resultado
-            st.write("Resultado")
+            st.success("File processed succesfully! ✅")
+            response = res.json()
+            risk = response.get("fare")
+
+            if risk:
+                st.markdown(f"Resultado: ##{risk}##")
+            else:
+                st.error("No se pudo determinar el nivel de riesgo. Por favor, intente de nuevo.")

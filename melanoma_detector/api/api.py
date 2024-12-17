@@ -24,11 +24,11 @@ def root():
 
 @app.post("/predict")
 async def receive_image(img: UploadFile=File(...)):
-    contents = await img.read()  # Read byte data
-    nparr = np.frombuffer(contents, np.uint8)  # Corrected from np.fromstring
+    contents = await img.read()
+    nparr = np.frombuffer(contents, np.uint8)
     preproc_img = preprocess_image(nparr)
     prediction = app.state.model.predict(tf.expand_dims(preproc_img, axis=0))
-    return {"fare": float(prediction[0][0])}  # Return the prediction
+    return {"fare": float(prediction[0][0])}
 
 
 
