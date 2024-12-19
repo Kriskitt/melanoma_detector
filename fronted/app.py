@@ -4,7 +4,7 @@ import requests
 import json
 import os
 
-url="http://localhost:8000"
+url="https://melanomadetector-1048162589583.us-central1.run.app"
 
 # Configuración inicial de la página de Streamlit
 st.set_page_config(
